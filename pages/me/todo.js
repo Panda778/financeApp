@@ -6,7 +6,7 @@ import HeadTags from "../../App/Components/HeadTags/HeadTags";
 import Layout from "../../App/Components/Layout/Layout";
 import ToDo from "../../App/Components/ToDo/ToDo";
 
-function todo() {
+function Todo() {
   const [text, setText] = useState("");
 
   const dispatch = useDispatch(addTodo);
@@ -26,4 +26,4 @@ function todo() {
   );
 }
 
-export default todo;
+export default Todo;

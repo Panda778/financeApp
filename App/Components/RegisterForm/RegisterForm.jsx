@@ -12,18 +12,23 @@ import {
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { useState } from "react";
 const RegisterForm = ({
   handleSubmit,
   email,
   password,
   setPassword,
   setEmail,
-  commitPas,
-  setCommitPas,
+  name,
+  setName,
+  secondName,
+  setSecondName,
 }) => {
+
+
   return (
     <Container>
-      <Paper  elevation={3} sx={{ borderRadius: 5 }}>
+      <Paper elevation={3} sx={{ borderRadius: 5 }}>
         <Box
           sx={{
             backgroundColor: "primary",
@@ -115,7 +120,7 @@ const RegisterForm = ({
             color="GrayText"
             sx={{
               width: "100%",
-              paddingTop:5,
+              paddingTop: 5,
               textAlign: "center",
               borderBottom: " 1px solid #000",
               lineHeight: "0.1em",
@@ -134,19 +139,53 @@ const RegisterForm = ({
                 color: "white",
               }}
             >
-              <FormControl sx={{ marginTop: 3 }}>
+              <FormControl
+                sx={{
+                  marginTop: 3,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 <TextField
-                  sx={{ marginTop: 1, width: "100%" }}
-                  value={email}
+                  sx={{ marginTop: 1, width: "48%", borderRadius: 20 }}
+                  value={name}
                   fullWidth
+                 
+                  placeholder={"Name"}
+                  variant="outlined"
+                  id="outlined-basic"
+                  label="Name"
+                  required={true}
+                  onChange={(e) => setName(e.target.value)}
                   autoFocus
+                >
+                  Name
+                </TextField>
+                <TextField
+                  sx={{ marginTop: 1, width: "48%", borderRadius: 5 }}
+                  value={secondName}
+                  fullWidth
+                  placeholder={"Surname"}
+                  variant="outlined"
+                  id="outlined-basic"
+                  label="Surname"
+                  onChange={(e) => setSecondName(e.target.value)}
+                >
+                  Second name
+                </TextField>
+              </FormControl>
+              <FormControl>
+                <TextField
+                  sx={{ marginTop: 3, width: "100%" }}
+                  value={email}
                   placeholder={"email"}
                   variant="outlined"
                   id="outlined-basic"
                   label="email"
                   onChange={(e) => setEmail(e.target.value)}
                 >
-                  email
+                  Email
                 </TextField>
               </FormControl>
               <FormControl>
@@ -157,20 +196,8 @@ const RegisterForm = ({
                   variant="outlined"
                   id="outlined-basic"
                   label="password"
+                 
                   onChange={(e) => setPassword(e.target.value)}
-                >
-                  password
-                </TextField>
-              </FormControl>
-              <FormControl>
-                <TextField
-                  sx={{ marginTop: 3, width: "100%" }}
-                  value={commitPas}
-                  placeholder={"Commit password"}
-                  variant="outlined"
-                  id="outlined-basic"
-                  label="commit password"
-                  onChange={(e) => setCommitPas(e.target.value)}
                 >
                   password
                 </TextField>
@@ -183,6 +210,7 @@ const RegisterForm = ({
               </Box>
 
               <Button
+               onClick={handleSubmit}
                 sx={{
                   marginTop: 3,
                   paddingY: 1,

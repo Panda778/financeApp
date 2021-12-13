@@ -1,20 +1,21 @@
-import Layout from "../App/Components/Layout/Layout";
+import { useState } from "react";
 import HeadTags from "../App/Components/HeadTags/HeadTags";
-import PieChart from "../App/Components/Charts/PieChart/PieChart";
-import BarChart from "../App/Components/Charts/BarChart/BarChart";
-import HomePageContainer from "../App/Containers/HomePageContainer/HomePageContainer";
+import Layout from "../App/Components/Layout/Layout"
+import LendingLayout from "../App/Components/Layout/LendingLayout/LendingLayout";
+import RegisterForm from "../App/Components/RegisterForm/RegisterForm";
+import WelcomePage from "../App/Components/WelcomPage/WelcomePage";
 
 
 
+const Welcome = () => {
 
-export default function Home() {
-  return (
-    <Layout>
-      <HeadTags title='home' />
-      <div>
-     <HomePageContainer/>
-      </div>
-     
-    </Layout>
-  );
+    return (
+        <LendingLayout>
+            <HeadTags title={'welcome'}></HeadTags>
+            
+            <WelcomePage/>
+        </LendingLayout>
+    )
 }
+
+export default Welcome

@@ -1,10 +1,10 @@
 import { Container, Grid } from "@mui/material";
-import { Box } from "@mui/system";
 import React from "react";
+import FourthGridChart from "../../Components/Charts/FourthGridChart/FourthGridChart";
 import GridChart from "../../Components/Charts/GridChart/GridChart";
 
 import SecondGridChart from "../../Components/Charts/SecondGridChart/SecondGridChart";
-import NewsBlock from "../../Components/NewsBlock/NewsBlock";
+import ThirdGridChart from "../../Components/Charts/ThirdGridChart/ThirdGridChart";
 import PurseBlock from "../../Components/PurseBlock/PurseBlock";
 
 function HomePageContainer() {
@@ -16,7 +16,9 @@ function HomePageContainer() {
 
       <SecondGridChart />
 
-      <NewsBlock />
+      <ThirdGridChart />
+      <FourthGridChart/>
+    
     </Container>
   );
 }

@@ -2,6 +2,7 @@ import HeadTags from "../App/Components/HeadTags/HeadTags";
 import Layout from "../App/Components/Layout/Layout"
 import LoginForm from "../App/Components/LoginForm/LoginForm";
 import { useState } from "react";
+import LendingLayout from "../App/Components/Layout/LendingLayout/LendingLayout";
 
 
 export default function Login() {
@@ -15,9 +16,9 @@ export default function Login() {
       
       };
     return (
-        <Layout>
+        <LendingLayout>
             <HeadTags title='login'/>
             <LoginForm handleSubmit={handleSubmit} email={email} password={password} setEmail={setEmail} setPassword={ setPassword}/>
-        </Layout>
+        </LendingLayout>
     );
 }

@@ -12,11 +12,11 @@ function PurseBlock() {
 
 
 
-            <Grid  columnGap={3} justifyContent={'space-around'} flexWrap='nowrap' container>
-                <PurseBlockItem lg='2.7' xs='3' colors="rgb(200,250,205)" Maxwidth="20%" />
-                <PurseBlockItem lg='2.7' xs='3' colors="rgb(208,242,254)" width="100px" />
-                <PurseBlockItem  lg='2.7' xs='3' colors="rgb(255,247,204)" width="100px" />
-                <PurseBlockItem lg='2.7' xs='3'  colors="rgb(255,231,217)" width="100px"/>
+            <Grid  columnGap={3} justifyContent={'space-between'} flexWrap='nowrap' container>
+                <PurseBlockItem  colors="rgb(200,250,205)" width="100%" />
+                <PurseBlockItem colors="rgb(208,242,254)" width="100px" />
+                <PurseBlockItem  colors="rgb(255,247,204)" width="100px" />
+                <PurseBlockItem   colors="rgb(255,231,217)" width="100px"/>
             </Grid>
        </Box>
     )

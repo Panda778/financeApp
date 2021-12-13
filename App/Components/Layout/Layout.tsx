@@ -5,27 +5,34 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
-import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import Divider from "@mui/material/Divider";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
-import {makeStyles} from '@mui/styles'
-import { List, ListItem, ListItemIcon, Menu, MenuItem,ListItemText} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  ListItemText,
+} from "@mui/material";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
-import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
-import FeedOutlinedIcon from '@mui/icons-material/FeedOutlined';
+import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 const drawerWidth = 240;
 
 //main
@@ -117,41 +124,36 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-
 const useStyle = makeStyles({
   root: {
-    color:'red'
+    color: "red",
   },
   links: {
-    color: 'yellow'
-  }
-})
+    color: "yellow",
+  },
+});
 
-export default function Layout({ children }) {
-  const style = useStyle()
+const Layout = ({ children }) => {
+  const style = useStyle();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
- 
-  const [modalOpen, setModalOpen] = React.useState(false)
-  console.log(modalOpen)
+  const [modalOpen, setModalOpen] = React.useState(false);
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-
   const handleModalOpen = () => {
-  setModalOpen(true)
-  }
+    setModalOpen(true);
+  };
   const handleModalClose = () => {
-    setModalOpen(false)
-  }
-  
+    setModalOpen(false);
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-  
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -192,10 +194,8 @@ export default function Layout({ children }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-     
     </Menu>
   );
 
@@ -254,7 +254,14 @@ export default function Layout({ children }) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{backgroundColor:'rgba(255, 255, 255, 0.72)', backdropFilter: 'blur(6px)'}} open={open}>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "rgba(255, 255, 255, 0.72)",
+          backdropFilter: "blur(6px)",
+        }}
+        open={open}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -329,8 +336,12 @@ export default function Layout({ children }) {
         open={open}
       >
         <DrawerHeader sx={{ display: "flex", justifyContent: "space-between" }}>
-        <img style={{width:'40px'}} src="https://minimal-kit-react.vercel.app/static/logo.svg" alt="" />
-          
+          <img
+            style={{ width: "40px" }}
+            src="https://minimal-kit-react.vercel.app/static/logo.svg"
+            alt=""
+          />
+
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
@@ -338,79 +349,59 @@ export default function Layout({ children }) {
               <ChevronRightIcon />
             )}
           </IconButton>
-          
         </DrawerHeader>
-        
+
         <Divider />
-       
-        <List >
-          <Link href="/" passHref>
-            <ListItem    button>
+
+        <List>
+          <Link href="/me/main" passHref>
+            <ListItem button>
               <ListItemIcon>
-        
-                <PieChartOutlineOutlinedIcon/>
+                <PieChartOutlineOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Overview</ListItemText>
             </ListItem>
           </Link>
           <Link href="/" passHref>
-            <ListItem   button>
+            <ListItem button>
               <ListItemIcon>
-                <PeopleAltOutlinedIcon/>
+                <PeopleAltOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Users</ListItemText>
             </ListItem>
           </Link>
-        
+
+          <Link href="/me/todo" passHref>
+            <ListItem button>
+              <ListItemIcon>
+                <FeedOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText>ToDO</ListItemText>
+            </ListItem>
+          </Link>
+
           <Link href="/" passHref>
-            <ListItem   button>
+            <ListItem button>
               <ListItemIcon>
-                <FeedOutlinedIcon/>
-              </ListItemIcon>
-              <ListItemText>Blog</ListItemText>
-            </ListItem>
-          </Link>
-          <Link href="/login" passHref>
-            <ListItem   button>
-              <ListItemIcon>
-               <LockOutlinedIcon/>
-              </ListItemIcon>
-              <ListItemText>LogIn</ListItemText>
-            </ListItem>
-          </Link>
-          <Link href="/register" passHref>
-            <ListItem   button>
-              <ListItemIcon>
-                <HowToRegOutlinedIcon/>
-              </ListItemIcon>
-              <ListItemText>Register</ListItemText>
-            </ListItem>
-          </Link>
-          <Link href="/" passHref>
-            <ListItem   button>
-              <ListItemIcon>
-               <ReportGmailerrorredOutlinedIcon/>
+                <ReportGmailerrorredOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Not found</ListItemText>
             </ListItem>
           </Link>
         </List>
-        
-     
-        <Divider />
-      
 
-       
+        <Divider />
       </Drawer>
-      
+
       <Main open={open}>
         <DrawerHeader />
-        
-         
+
         {children}
       </Main>
       {renderMenu}
       {renderMobileMenu}
     </Box>
   );
-}
+};
+
+export default Layout;

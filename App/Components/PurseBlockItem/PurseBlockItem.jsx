@@ -5,10 +5,10 @@ import { Grid,Box, Typography } from '@mui/material'
 import AndroidOutlinedIcon from '@mui/icons-material/AndroidOutlined';
 import React from 'react'
 
-function PurseBlockItem({ colors, Maxwidth,lg,xs }) {
+function PurseBlockItem({ colors, width }) {
     console.log(colors)
     return (
-        <Grid xs={xs} lg={lg} sx={{ backgroundColor: colors, height: 'auto',maxWidth: Maxwidth, display: 'flex',
+        <Grid xs={3} lg={2.7} sx={{ backgroundColor: colors, height: 'auto',width: width, display: 'flex',
          flexDirection:'column', alignItems:'center', justifyContent:'centers', paddingTop:8 ,paddingBottom:10, borderRadius:5, boxSizing:'border-box'}} item>
             <Box>
                 <AndroidOutlinedIcon   fontSize="large" />

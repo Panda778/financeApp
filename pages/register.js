@@ -23,6 +23,9 @@ const dispatch = useDispatch()
         dispatch(singUpUser({
             email, password, name, secondName
         }))
+        if (email && password && name && secondName.trim().length) {
+            return false
+        }
       
     };
  console.log(status);

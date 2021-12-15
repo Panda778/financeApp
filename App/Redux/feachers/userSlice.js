@@ -47,7 +47,17 @@ const userSlice = createSlice({
       secondName: "",
     },
   },
-  reducers: {},
+  reducers: {
+    logOut(state,action) {
+      state.status = 'idel'
+      state.data.name = ''
+      state.data.email =''
+        state.data.password =''
+        state.data.secondName =''
+        state.data.token =''
+   }
+
+  },
   extraReducers(builder) {
     builder
       .addCase(singUpUser.pending, (state, action) => {
@@ -91,5 +101,5 @@ const userSlice = createSlice({
 export default userSlice.reducer;
 
 export const UserDatas = (state) => state.user.data;
-
 export const UserStatus = (state) => state.user.status;
+export const {logOut} = userSlice.actions

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {v4 as uuidv4} from 'uuid' 
 import Toolbar from "@mui/material/Toolbar";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -22,7 +23,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@mui/styles";
 import { addTransaction } from '../../Redux/feachers/transactionSlice'
-import {addCard} from '../../Redux/feachers/walletSlice'
+import { addCard } from '../../Redux/feachers/walletSlice'
+import {logOut} from '../../Redux/feachers/userSlice'
 
 import {
   List,
@@ -46,6 +48,8 @@ import Link from "next/link";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { LogoutTwoTone } from "@mui/icons-material";
 const drawerWidth = 240;
 
 //main
@@ -166,12 +170,13 @@ const Layout = ({ children }) => {
   const [currency, setCurrency] = React.useState("");
   const [typeCard, setTypeCard] = React.useState("");
   
-
+const route = useRouter()
   const dispatch= useDispatch()
   const transac = useSelector(state => state.transaction.transaction)
-  const card = useSelector(state=> state.wallet.wallet)
+  const card = useSelector(state => state.wallet.wallet)
+  const userStatus =useSelector(state => state.user.status)
   console.log('transaction is here', transac);
-  
+  console.log(userStatus);
   const addCards = () => {
     const newCard = { id: uuidv4(), nameCard, money, currency, typeCard }
     dispatch(addCard({newCard}))
@@ -183,6 +188,17 @@ const Layout = ({ children }) => {
     setOpens(false);
    
   };
+
+  const logOuts = () => {
+    dispatch(logOut())
+ 
+  }
+  React.useEffect(() => {
+    if (userStatus === 'idel') {
+      route.push('/')
+    }
+    return false
+  },[userStatus])
 
 
   console.log(card);
@@ -394,6 +410,15 @@ const Layout = ({ children }) => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={logOuts}
+            >
+            
+                <LogoutTwoTone />
+           </IconButton>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
@@ -656,15 +681,18 @@ const Layout = ({ children }) => {
             </ListItem>
           </Link>
 
-          <Link href="/" passHref>
-            <ListItem button>
+          <Link  href="/" passHref>
+            <ListItem  button>
               <ListItemIcon>
                 <ReportGmailerrorredOutlinedIcon />
               </ListItemIcon>
               <ListItemText>Not found</ListItemText>
             </ListItem>
           </Link>
+          
         </List>
+        
+        
 
         <Divider />
       </Drawer>

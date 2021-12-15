@@ -3,7 +3,9 @@ import React from "react";
 import { Typography } from "@mui/material";
 import InputField from "../InputField/InputField";
 import ToDoList from "../ToDoList/ToDoList";
+import { useSelector } from "react-redux";
 function ToDo({ text, setText, handleSubmit }) {
+
   return (
     <Box sx={{ width: "100%", minHeight: "100vh" }}>
       <Box

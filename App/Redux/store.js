@@ -1,11 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import todoSlice from "./feachers/todoSlice";
-import userSlice from "./feachers/userSlice";
+import transactionSlice from "./feachers/transactionSlice";
+import userSlice, { loginSlice } from "./feachers/userSlice";
+
+
+import walletSlice from "./feachers/walletSlice";
 
 export const store = configureStore({
     reducer: ({
         user: userSlice,
-        todos: todoSlice
+        todos: todoSlice,
+        transaction: transactionSlice,
+        wallet: walletSlice,
+        userLogin: loginSlice
        
     })
 })

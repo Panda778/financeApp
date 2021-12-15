@@ -4,21 +4,26 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
+import {v4 as uuidv4} from 'uuid' 
 import Toolbar from "@mui/material/Toolbar";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import AddCardOutlinedIcon from "@mui/icons-material/AddCardOutlined";
 import Divider from "@mui/material/Divider";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
+import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Button } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@mui/styles";
+import { addTransaction } from '../../Redux/feachers/transactionSlice'
+import {addCard} from '../../Redux/feachers/walletSlice'
+
 import {
   List,
   ListItem,
@@ -26,6 +31,13 @@ import {
   Menu,
   MenuItem,
   ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  Container,
+  DialogActions,
 } from "@mui/material";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -33,6 +45,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
+import { useDispatch, useSelector } from "react-redux";
 const drawerWidth = 240;
 
 //main
@@ -136,13 +149,99 @@ const useStyle = makeStyles({
 const Layout = ({ children }) => {
   const style = useStyle();
   const theme = useTheme();
+
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [modalOpen, setModalOpen] = React.useState(false);
-
+  const [opens, setOpens] = React.useState(false);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+
+  //card
+  const [transaction,setTransaction] = React.useState(false)
+  const [money, setMoney] = React.useState("0");
+  const [nameCard, setNameCard] = React.useState("");
+  const [currency, setCurrency] = React.useState("");
+  const [typeCard, setTypeCard] = React.useState("");
+  
+
+  const dispatch= useDispatch()
+  const transac = useSelector(state => state.transaction.transaction)
+  const card = useSelector(state=> state.wallet.wallet)
+  console.log('transaction is here', transac);
+  
+  const addCards = () => {
+    const newCard = { id: uuidv4(), nameCard, money, currency, typeCard }
+    dispatch(addCard({newCard}))
+    setNameCard("");
+    setMoney("");
+    setTypeCard("");
+    setCurrency("");
+    localStorage.setItem("se", JSON.stringify(card));
+    setOpens(false);
+   
+  };
+
+
+  console.log(card);
+
+  const addTranc = () => {
+
+    const newTransaction = { id: uuidv4(), nameCard, currency }
+    console.log(newTransaction);
+    dispatch(addTransaction({newTransaction})) 
+  }
+
+
+  const handleOpenCardTransaction = () => {
+    setTransaction(true)
+  }
+
+  const handleCloseTransaction = () => {
+    setTransaction(false)
+  }
+
+  const handleChangeCur = (event) => {
+    setCurrency(event.target.value);
+  };
+  const currencies = [
+    {
+      value: "USD",
+      label: "$",
+    },
+    {
+      value: "EUR",
+      label: "€",
+    },
+    {
+      value: "BTC",
+      label: "฿",
+    },
+    {
+      value: "JPY",
+      label: "¥",
+    },
+  ];
+  const currencies1 = [
+    {
+      value: "visa",
+      label: "$",
+    },
+    {
+      value: "paypal",
+      label: "€",
+    },
+    {
+      value: "uzcard",
+      label: "฿",
+    },
+    {
+      value: "hump",
+      label: "¥",
+    },
+  ];
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -166,7 +265,12 @@ const Layout = ({ children }) => {
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
+  const handleOpenCard = () => {
+    setOpens(true);
+  };
+  const handleClose = () => {
+    setOpens(false);
+  };
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
@@ -294,20 +398,192 @@ const Layout = ({ children }) => {
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
+              onClick={handleOpenCardTransaction}
             >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+            
+                <LocalAtmOutlinedIcon />
+           </IconButton>
+     
+            <Box>
+              <Dialog
+                open={transaction}
+                onClose={handleCloseTransaction}
+                aria-labelledby={"add-card-transaction"}
+              >
+                <DialogTitle id={"add-card-transaction"}>
+                  Add Card Transaction
+                </DialogTitle>
+
+                <DialogContent>
+                  <DialogContentText>Add transaction</DialogContentText>
+                  <Container>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      
+                     
+                     
+            
+                      <TextField
+                        fullWidth
+                        id="outlined-basic"
+                        label="name your card"
+                        variant="outlined"
+                        value={nameCard}
+                        onChange={(e) => setNameCard(e.target.value)}
+                       
+                     />
+               
+                 
+                      
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Select"
+                        value={currency}
+                        onChange={handleChangeCur}
+                        helperText="Please select your currency"
+                      >
+                        {currencies.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      <TextField
+                        sx={{ width: "48%", marginLeft: 2 }}
+                        id="outlined-basic"
+                        label="money"
+                        variant="outlined"
+                        value={money}
+                        onChange={(e) => setMoney(e.target.value)}
+                      />
+                    </Box>
+
+                    <DialogActions>
+                      <Button
+                        onClick={addTranc}
+                        color={"info"}
+                        variant={"contained"}
+                      >
+                        addTransaction
+                      </Button>
+                    </DialogActions>
+                  </Container>
+                </DialogContent>
+              </Dialog>
+            </Box>
             <IconButton
+              onClick={handleOpenCard}
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
+              
+                <AddCardOutlinedIcon />
+          
             </IconButton>
+            <Box>
+              <Dialog
+                open={opens}
+                onClose={handleClose}
+                aria-labelledby={"add-card"}
+              >
+                <DialogTitle id={"add-card"} sx={{ textAlign: "center" }}>
+                  Add Card
+                </DialogTitle>
+
+                <DialogContent>
+                  <Container>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginBottom: 2,
+                        marginTop: 2,
+                      }}
+                    >
+                      <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Select"
+                        value={typeCard}
+                        sx={{ width: "30%" }}
+                        onChange={(e) => setTypeCard(e.target.value)}
+                      >
+                        {currencies1.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.value}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+
+                      <TextField
+                        sx={{ width: "69%" }}
+                        id="outlined-basic"
+                        label="name your card"
+                        variant="outlined"
+                        value={nameCard}
+                        onChange={(e) => setNameCard(e.target.value)}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Select"
+                        value={currency}
+                        onChange={handleChangeCur}
+                        helperText="Please select your currency"
+                      >
+                        {currencies.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                      <TextField
+                        sx={{ width: "48%", marginLeft: 2 }}
+                        id="outlined-basic"
+                        label="money"
+                        variant="outlined"
+                        value={money}
+                        onChange={(e) => setMoney(e.target.value)}
+                      />
+                    </Box>
+
+                    <DialogActions>
+                      <Button
+                        onClick={addCards}
+                        color={"info"}
+                        variant={"contained"}
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </Container>
+                </DialogContent>
+              </Dialog>
+            </Box>
             <IconButton
               size="large"
               edge="end"

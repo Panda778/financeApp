@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useReducer, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import Layout from "../App/Components/Layout/Layout"
 import LendingLayout from "../App/Components/Layout/LendingLayout/LendingLayout";
 import RegisterForm from "../App/Components/RegisterForm/RegisterForm";
 import { singUpUser, UserDatas, UserStatus } from "../App/Redux/feachers/userSlice";
@@ -20,7 +19,7 @@ const dispatch = useDispatch()
     const status = useSelector(UserStatus)
     const handleSubmit = async (e) => {
         e.preventDefault();
-       
+         
             dispatch(singUpUser({
                 email, password, name, secondName
             }))

@@ -6,13 +6,14 @@ import LendingLayout from "../App/Components/Layout/LendingLayout/LendingLayout"
 import { useDispatch } from "react-redux";
 import { loginUser, UserStatus } from "../App/Redux/feachers/userSlice";
 import { useSelector } from "react-redux";
-
+import  { useRouter } from "next/router";
 
 export default function Login() {
     const dispatch =useDispatch()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const status =useSelector(UserStatus)
+    const status = useSelector(UserStatus)
+    const rout = useRouter()
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { email, password };

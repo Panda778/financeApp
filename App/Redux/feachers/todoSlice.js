@@ -10,11 +10,14 @@ const todoSlice = createSlice({
   },
   reducers: {
     addTodo(state, action) {
+    
       state.todos.push({
         id:uuidv4(),
         text: action.payload.text,
         complete: false,
       });
+      localStorage.setItem('todos',JSON.stringify(state.todos))
+    
     },
     deleteTodo(state, action) {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);

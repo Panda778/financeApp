@@ -34,9 +34,9 @@ const PieChart = () => (
   <Paper
      elevation={3}
     sx={{
-      width: "319px",
-      height: "400px",
+      height: "auto",
       borderRadius: 5,
+      boxSizing:'border-box'
     }}
   >
     <Box
@@ -53,8 +53,8 @@ const PieChart = () => (
         User growth (New Users)
       </Typography>
     </Box>
-    <Box sx={{ width: 280, height: "auto", margin: " 0 auto", paddingTop: 3 }}>
-			<Pie data={data} options={options} width={100} height={100} />
+    <Box sx={{ height:'auto', paddingTop: 3 , boxSizing:'border-box' }}>
+			<Pie data={data} options={options} width={100} height={'auto'} />
 			
     </Box>
   </Paper>

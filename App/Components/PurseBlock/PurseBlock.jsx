@@ -1,22 +1,29 @@
-
-
 import { Grid } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { UserDatas } from '../../Redux/feachers/userSlice'
+import { walletData } from '../../Redux/feachers/walletSlice'
 import PurseBlockItem from '../PurseBlockItem/PurseBlockItem'
 
 function PurseBlock() {
+    const userData = useSelector(UserDatas)
+    console.log(userData);
+    const wallet = useSelector(walletData)
     return (
         <Box>
-            <h1>Hello,Welcome Back</h1>
+            <h1>Hello,Welcome Back :  {userData.name}</h1>
 
 
 
-            <Grid  columnGap={3} justifyContent={'space-between'} flexWrap='nowrap' container>
-                <PurseBlockItem  colors="rgb(200,250,205)" width="100%" />
-                <PurseBlockItem colors="rgb(208,242,254)" width="100px" />
-                <PurseBlockItem  colors="rgb(255,247,204)" width="100px" />
-                <PurseBlockItem   colors="rgb(255,231,217)" width="100px"/>
+            <Grid  columnGap={2}  flexWrap='wrap' container>
+                {wallet.map((item, id) => {
+                   
+                    return      <PurseBlockItem id={item.id} key={id} item={item} />
+                        
+             
+                 
+               })}
             </Grid>
        </Box>
     )

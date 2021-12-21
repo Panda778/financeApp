@@ -10,7 +10,8 @@ function ToDoList() {
 
   console.log(todos);
   return (
-    <List>
+    <List >
+
       {todos.map((todo, index) => {
         return <TodoListItem key={todo.id} {...todo} />;
       })}

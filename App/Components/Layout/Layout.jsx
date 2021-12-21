@@ -4,8 +4,7 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import {v4 as uuidv4} from 'uuid' 
+import { v4 as uuidv4 } from "uuid";
 import Toolbar from "@mui/material/Toolbar";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { alpha } from "@mui/material/styles";
@@ -17,14 +16,19 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@mui/styles";
-import { addTransaction } from '../../Redux/feachers/transactionSlice'
-import { addCard } from '../../Redux/feachers/walletSlice'
-import {logOut} from '../../Redux/feachers/userSlice'
+import { addTransaction } from "../../Redux/feachers/transactionSlice";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import {
+  addCard,
+  createCard,
+  fetchAllWallets,
+} from "../../Redux/feachers/walletSlice";
+import { getUser, logOut, reverseUser, UserDatas } from "../../Redux/feachers/userSlice";
 
 import {
   List,
@@ -50,6 +54,7 @@ import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { LogoutTwoTone } from "@mui/icons-material";
+
 const drawerWidth = 240;
 
 //main
@@ -145,14 +150,18 @@ const useStyle = makeStyles({
   root: {
     color: "red",
   },
-  links: {
-    color: "yellow",
+  active: {
+    color: "#00AA55",
+    backgroundColor: "#EFF8F1",
+    borderRight: "1px solid #00AA55 ",
   },
 });
 
 const Layout = ({ children }) => {
   const style = useStyle();
   const theme = useTheme();
+
+  const [color, setColor] = React.useState(false);
 
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -164,60 +173,77 @@ const Layout = ({ children }) => {
 
 
   //card
-  const [transaction,setTransaction] = React.useState(false)
+  const [transaction, setTransaction] = React.useState(false);
   const [money, setMoney] = React.useState("0");
   const [nameCard, setNameCard] = React.useState("");
   const [currency, setCurrency] = React.useState("");
   const [typeCard, setTypeCard] = React.useState("");
+  const route = useRouter();
+  const dispatch = useDispatch();
+  const card = useSelector((state) => state.wallet.wallet);
+  const userStatus = useSelector((state) => state.user.status);
+  const userData = useSelector(UserDatas);
+
   
-const route = useRouter()
-  const dispatch= useDispatch()
-  const transac = useSelector(state => state.transaction.transaction)
-  const card = useSelector(state => state.wallet.wallet)
-  const userStatus =useSelector(state => state.user.status)
-  console.log('transaction is here', transac);
-  console.log(userStatus);
+
   const addCards = () => {
-    const newCard = { id: uuidv4(), nameCard, money, currency, typeCard }
-    dispatch(addCard({newCard}))
+    const newCard = { name: nameCard, currency, user: userData.id };
+    dispatch(createCard(newCard));
     setNameCard("");
     setMoney("");
     setTypeCard("");
     setCurrency("");
-    localStorage.setItem("se", JSON.stringify(card));
+    localStorage.setItem("wallet", JSON.stringify(card));
     setOpens(false);
-   
   };
+  console.log(userData.name);
+
+  const handleChangeColor = () => {
+    setColor(!color);
+  };
+  
 
   const logOuts = () => {
-    dispatch(logOut())
- 
-  }
+    dispatch(logOut());
+  };
   React.useEffect(() => {
-    if (userStatus === 'idel') {
-      route.push('/')
-    }
-    return false
-  },[userStatus])
 
+    if (localStorage.getItem('user')|| localStorage.getItem('userlogin')) {
+      let loc = JSON.parse(localStorage.getItem('user'))
+      console.log(loc);
+      dispatch(reverseUser(loc))
+    } else {
+      return false
+    }
+
+    dispatch(fetchAllWallets({ userId: userData.id }))
+      
+    if (userStatus === "idel") {
+      route.push("/");
+      
+    } else {
+      return false
+    }
+    
+    
+   
+  }, [userStatus]);
 
   console.log(card);
 
   const addTranc = () => {
-
-    const newTransaction = { id: uuidv4(), nameCard, currency }
+    const newTransaction = { id: uuidv4(), nameCard, currency };
     console.log(newTransaction);
-    dispatch(addTransaction({newTransaction})) 
-  }
-
+    dispatch(addTransaction({ newTransaction }));
+  };
 
   const handleOpenCardTransaction = () => {
-    setTransaction(true)
-  }
+    setTransaction(true);
+  };
 
   const handleCloseTransaction = () => {
-    setTransaction(false)
-  }
+    setTransaction(false);
+  };
 
   const handleChangeCur = (event) => {
     setCurrency(event.target.value);
@@ -313,9 +339,23 @@ const route = useRouter()
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem sx={{marginBottom:1}}>
+        <AccountCircleOutlinedIcon />
+        <Typography sx={{marginLeft:1}}>
+        {userData.name}
+        </Typography>
+      </MenuItem>
+      <MenuItem sx={{borderTop:1}} onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={logOuts}>
+        
+        <Button>
+        <LogoutTwoTone sx={{color:'red'}}/>
+        
+        Log out
+       </Button></MenuItem>
     </Menu>
   );
 
@@ -379,6 +419,8 @@ const route = useRouter()
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.72)",
           backdropFilter: "blur(6px)",
+       
+         
         }}
         open={open}
       >
@@ -410,25 +452,22 @@ const route = useRouter()
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <IconButton
+            <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
               onClick={logOuts}
             >
-            
-                <LogoutTwoTone />
-           </IconButton>
+            </IconButton>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
               onClick={handleOpenCardTransaction}
             >
-            
-                <LocalAtmOutlinedIcon />
-           </IconButton>
-     
+              <LocalAtmOutlinedIcon />
+            </IconButton>
+
             <Box>
               <Dialog
                 open={transaction}
@@ -449,10 +488,6 @@ const route = useRouter()
                         justifyContent: "space-between",
                       }}
                     >
-                      
-                     
-                     
-            
                       <TextField
                         fullWidth
                         id="outlined-basic"
@@ -460,11 +495,7 @@ const route = useRouter()
                         variant="outlined"
                         value={nameCard}
                         onChange={(e) => setNameCard(e.target.value)}
-                       
-                     />
-               
-                 
-                      
+                      />
                     </Box>
                     <Box
                       sx={{
@@ -516,9 +547,7 @@ const route = useRouter()
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              
-                <AddCardOutlinedIcon />
-          
+              <AddCardOutlinedIcon />
             </IconButton>
             <Box>
               <Dialog
@@ -631,6 +660,7 @@ const route = useRouter()
             width: drawerWidth,
             boxSizing: "border-box",
           },
+        
         }}
         variant="persistent"
         anchor="left"
@@ -643,7 +673,12 @@ const route = useRouter()
             alt=""
           />
 
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton sx={{
+            display: {
+              xs: 'block',
+              lg: 'none',
+              xl:'none'
+          }}} onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
@@ -654,17 +689,22 @@ const route = useRouter()
 
         <Divider />
 
-        <List>
-          <Link href="/me/main" passHref>
-            <ListItem button>
-              <ListItemIcon>
-                <PieChartOutlineOutlinedIcon />
-              </ListItemIcon>
+        <List sx={{ padding: 0 }}>
+          <ListItem
+            onChange={handleChangeColor}
+            className={route.pathname === "/me/main" ? style.active : ""}
+            button
+          >
+            <ListItemIcon>
+              <PieChartOutlineOutlinedIcon />
+            </ListItemIcon>
+            <Link href="/me/main" passHref>
               <ListItemText>Overview</ListItemText>
-            </ListItem>
-          </Link>
+            </Link>
+          </ListItem>
+
           <Link href="/" passHref>
-            <ListItem button>
+            <ListItem onClick={handleChangeColor} button>
               <ListItemIcon>
                 <PeopleAltOutlinedIcon />
               </ListItemIcon>
@@ -672,27 +712,32 @@ const route = useRouter()
             </ListItem>
           </Link>
 
-          <Link href="/me/todo" passHref>
-            <ListItem button>
-              <ListItemIcon>
-                <FeedOutlinedIcon />
-              </ListItemIcon>
+          <ListItem
+            onClick={handleChangeColor}
+            className={route.pathname === "/me/todo" ? style.active : ""}
+            button
+          >
+            <ListItemIcon>
+              <FeedOutlinedIcon />
+            </ListItemIcon>
+            <Link href="/me/todo" passHref>
               <ListItemText>ToDO</ListItemText>
-            </ListItem>
-          </Link>
+            </Link>
+          </ListItem>
 
-          <Link  href="/" passHref>
-            <ListItem  button>
-              <ListItemIcon>
-                <ReportGmailerrorredOutlinedIcon />
-              </ListItemIcon>
+          <ListItem
+            onClick={handleChangeColor}
+            className={route.pathname === "/" ? "active" : ""}
+            button
+          >
+            <ListItemIcon>
+              <ReportGmailerrorredOutlinedIcon />
+            </ListItemIcon>
+            <Link href="/" passHref>
               <ListItemText>Not found</ListItemText>
-            </ListItem>
-          </Link>
-          
+            </Link>
+          </ListItem>
         </List>
-        
-        
 
         <Divider />
       </Drawer>

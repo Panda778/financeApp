@@ -33,6 +33,8 @@ function TrafficBlock() {
              
             }}
             xs={5}
+            lg={5}
+            xl={5}
             item
           >
             <Box sx={{ paddingTop: "15px", paddingBottom: "15px" }}>
@@ -44,7 +46,9 @@ function TrafficBlock() {
             </Box>
           </Grid>
           <Grid
-            xs={5}
+             xs={5}
+            lg={5}
+            xl={5}
             sx={{
               border: 1,
               borderColor: "#E4E8EB",
@@ -62,7 +66,9 @@ function TrafficBlock() {
             </Box>
           </Grid>
           <Grid
-            xs={5}
+             xs={5}
+            lg={5}
+            xl={5}
             sx={{
               border: 1,
               textAlign: "center",
@@ -80,7 +86,9 @@ function TrafficBlock() {
             </Box>
           </Grid>
           <Grid
-            xs={5}
+           xs={5}
+            lg={5}
+            xl={5}
             sx={{
               border: 1,
               textAlign: "center",

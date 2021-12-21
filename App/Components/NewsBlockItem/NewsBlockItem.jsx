@@ -4,14 +4,15 @@ import React from "react";
 
 function NewsBlockItem() {
   return (
-    <Grid rowGap={0.4} sx={{ display: "flex", width: "100%" }} container>
+    <Grid rowGap={0.4}  sx={{ display: "flex"}} container>
       <Grid
         sx={{
           display: "flex",
-
           justifyContent: "space-between",
+      
         }}
         xs={12}
+        lg={12}
         item
       >
         <Box>
@@ -21,6 +22,7 @@ function NewsBlockItem() {
               height: "48px",
               borderRadius: 10,
               marginRight: 4,
+              
             }}
             src="https://minimal-kit-react.vercel.app/static/mock-images/covers/cover_1.jpg"
             alt=""
@@ -38,19 +40,19 @@ function NewsBlockItem() {
         </Box>
 
         <Box>
-          <Typography component={"span"}>2 days</Typography>
+          <Typography  component={"span"} >2 days</Typography>
         </Box>
       </Grid>
       <Grid
         sx={{
           display: "flex",
 
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}
-        xs={12}
+        xs={10}
+        lg={12}
         item
       >
-        {" "}
         <Box>
           <img
             style={{
@@ -81,12 +83,12 @@ function NewsBlockItem() {
         sx={{
           display: "flex",
 
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}
-        xs={12}
+        xs={10}
+        lg={12}
         item
       >
-        {" "}
         <Box>
           <img
             style={{
@@ -117,12 +119,13 @@ function NewsBlockItem() {
         sx={{
           display: "flex",
 
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}
-        xs={12}
+        xs={10}
+        lg={12}
         item
       >
-        {" "}
+    
         <Box>
           <img
             style={{
@@ -155,7 +158,8 @@ function NewsBlockItem() {
 
           justifyContent: "space-between",
         }}
-        xs={12}
+        xs={10}
+        lg={12}
         item
       >
         {" "}
@@ -166,6 +170,7 @@ function NewsBlockItem() {
               height: "48px",
               borderRadius: 10,
               marginRight: 4,
+              
             }}
             src="https://minimal-kit-react.vercel.app/static/mock-images/covers/cover_5.jpg"
             alt=""

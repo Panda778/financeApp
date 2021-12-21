@@ -5,7 +5,7 @@ import TodoBlockItem from "../TodoBlockItem/TodoBlockItem";
 
 function TodoBlock() {
   return (
-    <Paper elevation={3} sx={{ width: "710px", borderRadius: 5 }}>
+    <Paper elevation={3} sx={{  borderRadius: 5 }}>
       <Typography
         sx={{ paddingTop: 2, marginLeft: 3, paddingBottom: 1 }}
         component={"p"}

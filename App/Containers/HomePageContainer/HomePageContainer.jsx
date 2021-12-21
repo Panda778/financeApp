@@ -7,7 +7,7 @@ import SecondGridChart from "../../Components/Charts/SecondGridChart/SecondGridC
 import ThirdGridChart from "../../Components/Charts/ThirdGridChart/ThirdGridChart";
 import PurseBlock from "../../Components/PurseBlock/PurseBlock";
 
-function HomePageContainer() {
+function  HomePageContainer() {
   return (
     <Container>
       <PurseBlock />

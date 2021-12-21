@@ -78,8 +78,8 @@ const BarChart = () => {
     <Paper
        elevation={3}
       sx={{
-        width: "742px",
-        height: "410px",
+    
+        height: "auto",
         borderRadius: 5,
         boxSizing: "border-box",
       }}
@@ -89,7 +89,7 @@ const BarChart = () => {
           display: "flex",
           justifyContent: "space-around",
 
-          paddingTop: 2,
+          paddingTop: 1,
         }}
       >
         <Typography
@@ -101,10 +101,9 @@ const BarChart = () => {
       </Box>
       <Box
         sx={{
-          width: "350px",
-          height: "auto",
+          width: "45%",
           boxSizing: "border-box",
-          marginTop: 2,
+          
           marginLeft: 2,
         }}
       >

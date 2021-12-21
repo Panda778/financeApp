@@ -7,9 +7,9 @@ function NewsBlock() {
       <Paper
           elevation={3}
       sx={{
-        width: "747px",
-        height: "420px",
-        padding: "5px 28px 30px 30px",
+   
+        height: "auto",
+        padding: "5px 10px 10px 10px",
       
         borderRadius: 5,
       }}

@@ -7,7 +7,7 @@ function TodoBlockItem() {
 
   
     return (
-        <Grid xs={12} item>
+        <Grid xs={12} lg={12} item>
             
         
            <ToDoList/>

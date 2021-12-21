@@ -3,9 +3,24 @@ import React from "react";
 import { Typography } from "@mui/material";
 import InputField from "../InputField/InputField";
 import ToDoList from "../ToDoList/ToDoList";
-import { useSelector } from "react-redux";
-function ToDo({ text, setText, handleSubmit }) {
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { todosData } from "../../Redux/feachers/todoSlice";
+import { addTodo } from "../../Redux/feachers/todoSlice";
 
+function ToDo() {
+  const [text, setText] = useState("");
+
+ 
+  console.log('here',todosData);
+   const dispatch = useDispatch(addTodo);
+   const addTask = () => {
+     if (text.trim().length) {
+       dispatch(addTodo({ text }));
+       setText("");
+     }
+   };
+   
   return (
     <Box sx={{ width: "100%", minHeight: "100vh" }}>
       <Box
@@ -21,10 +36,11 @@ function ToDo({ text, setText, handleSubmit }) {
           TODO
         </Typography>
         <img src="/logo.svg" alt="" width="80px" />
+    
       </Box>
-      <InputField text={text} setText={setText} handleSubmit={handleSubmit} />
+      <InputField  text={text} setText={setText} handleSubmit={addTask} />
       <Box>
-        <ToDoList />
+        <ToDoList  />
       </Box>
     </Box>
   );

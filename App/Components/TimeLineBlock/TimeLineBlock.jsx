@@ -4,27 +4,20 @@ import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
-import LaptopMacIcon from "@mui/icons-material/LaptopMac";
-import HotelIcon from "@mui/icons-material/Hotel";
-import RepeatIcon from "@mui/icons-material/Repeat";
-import Typography from "@mui/material/Typography";
 import { Paper, Box } from "@mui/material";
-import { width } from "@mui/system";
-
+import { Typography } from "@mui/material";
 export default function TimeLineBlock() {
   return (
-    <Paper  elevation={3} sx={{ width: "319px", height: "410px",borderRadius:5 }}>
+    <Paper  elevation={3} sx={{borderRadius:5 }}>
       <Box sx={{marginLeft:6, paddingTop:1}}>
         <Typography component="p" fontWeight="bold">
           Order TimeLine
         </Typography>
       </Box>
-          <Box sx={{height:'20%' ,width:'368px'}}>
+          <Box sx={{height:'360px', boxSizing:'border-box'}} >
               
-      <Timeline position="right" sx={{ height: "100%", padding: "0 100px 0 0" }}>
+      <Timeline position="right" sx={{height:'20px',padding: "0 1px 0 0", boxSizing:'border-box'}}>
         <TimelineItem>
           <TimelineSeparator>
             <TimelineConnector />

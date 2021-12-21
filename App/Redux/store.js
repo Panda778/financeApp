@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import todoSlice from "./feachers/todoSlice";
 import transactionSlice from "./feachers/transactionSlice";
 import userSlice from "./feachers/userSlice";
@@ -11,7 +12,8 @@ export const store = configureStore({
         user: userSlice,
         todos: todoSlice,
         transaction: transactionSlice,
-        wallet: walletSlice
+        wallet: walletSlice,
+  
        
     })
 })

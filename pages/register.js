@@ -20,12 +20,12 @@ const dispatch = useDispatch()
     const status = useSelector(UserStatus)
     const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(singUpUser({
-            email, password, name, secondName
-        }))
-        if (email && password && name && secondName.trim().length) {
-            return false
-        }
+       
+            dispatch(singUpUser({
+                email, password, name, secondName
+            }))
+    
+       
       
     };
  console.log(status);

@@ -88,5 +88,5 @@ export const data = {
 };
 
 export function LineChart() {
-    return <Paper  elevation={3} sx={{ width:'739px',height:'420px', borderRadius:5}}><Line options={options} data={data} /></Paper>;
+    return <Paper  elevation={3} sx={{height:'auto',borderRadius:5}}><Line options={options} data={data} /></Paper>;
 }

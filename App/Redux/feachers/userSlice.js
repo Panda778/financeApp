@@ -34,28 +34,35 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
     status: "idel",
     data: {
-      id: '',
-      token: '',
-      email: "",
-      password: "",
-      name: "",
-      secondName: "",
+      id:'',
+      token:'',
+      email:"",
+      password:"",
+      name:"",
+      secondName:"",
     },
   },
   reducers: {
     logOut(state,action) {
-      state.status = 'idel'
-      state.data.name = ''
-      state.data.email =''
-        state.data.password =''
-        state.data.secondName =''
-        state.data.token =''
-   }
+      state.status='idel'
+      state.data.name=''
+      state.data.email=''
+        state.data.password=''
+        state.data.secondName=''
+      state.data.token = ''
+      
+    },
+    reverseUser(state,action) {
+      state.status='success'
+      state.data =action.payload
+    }
 
   },
   extraReducers(builder) {
@@ -65,34 +72,34 @@ const userSlice = createSlice({
       })
       .addCase(singUpUser.fulfilled, (state, action) => {
         state.status = "success";
-        state.data.name = action.payload.name;
-        state.data.email = action.payload.email;
-        state.data.password = action.payload.password;
-        state.data.secondName = action.payload.secondName;
-        state.data.id = action.payload.id
-        state.data.token =action.payload.token
+        state.data.name=action.payload.name;
+        state.data.email=action.payload.email;
+        state.data.password=action.payload.password;
+        state.data.secondName=action.payload.secondName;
+        state.data.id=action.payload.id
+        state.data.token=action.payload.token
         localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(singUpUser.rejected, (state, action) => {
-        state.status = "fail";
+        state.status="fail";
         localStorage.removeItem("user");
       })
       .addCase(loginUser.pending, (state, action) => {
-        state.status = "loading";
+        state.status="loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = "success";
-        state.data.email = action.payload.email;
-        state.data.password = action.payload.password;
-        state.data.secondName = action.payload.secondName;
-        state.data.id = action.payload.id
-        state.data.name = action.payload.name;
-        state.data.token =action.payload.token
+        state.status="success";
+        state.data.email=action.payload.email;
+        state.data.password=action.payload.password;
+        state.data.secondName=action.payload.secondName;
+        state.data.id=action.payload.id
+        state.data.name=action.payload.name;
+        state.data.token=action.payload.token
 
         localStorage.setItem("userlogin", JSON.stringify(action.payload));
       })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = "fail";
+      .addCase(loginUser.rejected,(state, action) => {
+        state.status="fail";
         localStorage.removeItem("userlogin");
       });
   },
@@ -102,4 +109,4 @@ export default userSlice.reducer;
 
 export const UserDatas = (state) => state.user.data;
 export const UserStatus = (state) => state.user.status;
-export const {logOut} = userSlice.actions
+export const {logOut,reverseUser} = userSlice.actions

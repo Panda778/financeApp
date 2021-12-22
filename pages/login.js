@@ -4,6 +4,7 @@ import LoginForm from "../App/Components/LoginForm/LoginForm";
 import { useEffect, useState } from "react";
 import LendingLayout from "../App/Components/Layout/LendingLayout/LendingLayout";
 import { useDispatch } from "react-redux";
+import Link from 'next/link'
 import {
   loginUser,
   reverseUser,
@@ -11,6 +12,9 @@ import {
 } from "../App/Redux/feachers/userSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { Container, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -21,29 +25,53 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { email, password };
-      dispatch(loginUser(data));
-      router.push('/me/main')
+    dispatch(loginUser(data));
+    router.push("/me/main");
     if (email && password.trim().length) {
       return false;
     }
   };
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-   
-        router.push('/me/main')
+    if (status ==='success') {
+      router.push("/me/main");
     }
-  }, []);
+  }, [status]);
   return (
     <LendingLayout>
-      <HeadTags title="login" />
-      <LoginForm
+          <HeadTags title="login" />
+          
+          <Box sx={{display:'flex', alignItems:'center'}}>
+              <Paper  sx={{ width: '50%',height:'685px',borderRadius:5 ,margin:'25px 0 0 16px', display:'flex',flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+                  <Container>
+                      <Box sx={{display:'flex',flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}}>
+                          <img src="https://minimal-kit-react.vercel.app/static/logo.svg" style={{ width: '50px', marginBottom: 80 }} alt="" />
+                          <Typography sx={{marginTop:1.5}}>
+                              Do you have an account ?
+                              
+                               <Link  href={'/'} passHref>
+                                  <Typography color={'green'} sx={{cursor:'pointer'}} component={'span'}>
+                                   Get started
+                              </Typography>
+                              </Link>
+                          </Typography>
+                 </Box>
+                  <Box sx={{ maxWidth: '464px',marginBottom:10}}>
+                      <Typography variant={'h4'} component={'h4'}>
+                          Hi Welcome back
+                      </Typography>
+                  <img src="https://minimal-kit-react.vercel.app/static/illustrations/illustration_login.png" alt="" />
+              </Box>
+              </Container>
+          </Paper>
+              <LoginForm
         handleSubmit={handleSubmit}
         email={email}
         password={password}
         setEmail={setEmail}
         setPassword={setPassword}
       />
+    </Box>
     </LendingLayout>
   );
 }

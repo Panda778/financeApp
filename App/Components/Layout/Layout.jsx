@@ -208,7 +208,7 @@ const Layout = ({ children }) => {
     dispatch(logOut());
   };
   React.useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!localStorage.getItem("user")) {
       return route.push("/");
     } else {
       let loc = JSON.parse(localStorage.getItem("user"));
@@ -217,9 +217,6 @@ const Layout = ({ children }) => {
     if (userData.id) {
       dispatch(fetchAllWallets({ userId: userData.id }));
     }
-
-
-    
   }, [userStatus]);
 
   console.log(card);

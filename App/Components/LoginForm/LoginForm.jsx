@@ -13,6 +13,9 @@ import PieChart from "../Charts/PieChart/PieChart";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { useSelector } from "react-redux";
+import { UserStatus } from "../../Redux/feachers/userSlice";
+import Progress from "../Progress/Progress";
 const LoginForm = ({
   handleSubmit,
   email,
@@ -20,6 +23,8 @@ const LoginForm = ({
   setPassword,
   setEmail,
 }) => {
+
+  const status =useSelector(UserStatus)
   return (
     <Container>
       <Box
@@ -174,7 +179,10 @@ const LoginForm = ({
               variant="contained"
               fullWidth
             >
-              send
+              {status === 'loading' ? <Progress /> :
+            
+                'send'
+              }
             </Button>
           </form>
         </Box>

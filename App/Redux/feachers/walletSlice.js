@@ -19,7 +19,8 @@ export const createCard = createAsyncThunk(
   }
 );
 
-export const fetchAllWallets = createAsyncThunk('wallet/fetchAllWalllets',
+export const fetchAllWallets = createAsyncThunk(
+  "wallet/fetchAllWalllets",
   async (data) => {
     try {
       const res = await axios({
@@ -33,8 +34,9 @@ export const fetchAllWallets = createAsyncThunk('wallet/fetchAllWalllets',
       throw new Error(error);
     }
   }
-)
-export const deleteWallet = createAsyncThunk('wallet/deleteWallet',
+);
+export const deleteWallet = createAsyncThunk(
+  "wallet/deleteWallet",
   async (data) => {
     try {
       const res = await axios({
@@ -47,8 +49,9 @@ export const deleteWallet = createAsyncThunk('wallet/deleteWallet',
       throw new Error(error);
     }
   }
-)
-export const handleChangeWallet = createAsyncThunk('wallet/handleChangeWallet',
+);
+export const handleChangeWallet = createAsyncThunk(
+  "wallet/handleChangeWallet",
   async (data) => {
     try {
       const res = await axios({
@@ -61,8 +64,7 @@ export const handleChangeWallet = createAsyncThunk('wallet/handleChangeWallet',
       throw new Error(error);
     }
   }
-)
-
+);
 
 const walletSlice = createSlice({
   name: "wallet",
@@ -72,36 +74,34 @@ const walletSlice = createSlice({
   },
   reducers: {
     addCard(state, action) {
-      state.status = "success",
-        state.wallet = [...state.wallet, action.payload.newCard]
+      (state.status = "success"),
+        (state.wallet = [...state.wallet, action.payload.newCard]);
     },
- 
-    
   },
- 
+
   extraReducers(builder) {
-      builder
+    builder
       .addCase(createCard.pending, (state, action) => {
-         state.status = "loading";
-       })
-       .addCase(createCard.fulfilled, (state, action) => {
-         state.status = "success";
-        state.wallet = [...state.wallet, action.payload]
-       })
-       .addCase(createCard.rejected, (state, action) => {
-         state.status="fail";
-         localStorage.removeItem("wallet");
-       })
-        
-       .addCase(fetchAllWallets.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(createCard.fulfilled, (state, action) => {
+        state.status = "success";
+        state.wallet = [...state.wallet, action.payload];
+      })
+      .addCase(createCard.rejected, (state, action) => {
+        state.status = "fail";
+        localStorage.removeItem("wallet");
+      })
+
+      .addCase(fetchAllWallets.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(fetchAllWallets.fulfilled, (state, action) => {
         state.status = "success";
-       state.wallet = action.payload
+        state.wallet = action.payload;
       })
       .addCase(fetchAllWallets.rejected, (state, action) => {
-        state.status="fail";
+        state.status = "fail";
         localStorage.removeItem("wallet");
       })
       .addCase(deleteWallet.pending, (state, action) => {
@@ -109,10 +109,12 @@ const walletSlice = createSlice({
       })
       .addCase(deleteWallet.fulfilled, (state, action) => {
         state.status = "success";
-       state.wallet = state.wallet.filter(wallet => wallet.id !== action.payload.walletId)
+        state.wallet = state.wallet.filter(
+          (wallet) => wallet.id !== action.payload.walletId
+        );
       })
       .addCase(deleteWallet.rejected, (state, action) => {
-        state.status="fail";
+        state.status = "fail";
         localStorage.removeItem("wallet");
       })
       .addCase(handleChangeWallet.pending, (state, action) => {
@@ -120,23 +122,23 @@ const walletSlice = createSlice({
       })
       .addCase(handleChangeWallet.fulfilled, (state, action) => {
         state.status = "success";
-        state.wallet = state.wallet.map(wallet => {
+        state.wallet = state.wallet.map((wallet) => {
           if (wallet.id === action.payload.walletId) {
-            wallet.name = action.payload.name
-            wallet.currency = action.payload.currency
+            wallet.name = action.payload.name;
+            wallet.currency = action.payload.currency;
           }
-          return wallet
-        })
+          return wallet;
+        });
       })
       .addCase(handleChangeWallet.rejected, (state, action) => {
-        state.status="fail";
+        state.status = "fail";
         localStorage.removeItem("wallet");
-      })
-  }
+      });
+  },
 });
 
 export const { addCard } = walletSlice.actions;
 
-export const walletData = (state => state.wallet.wallet)
+export const walletData = (state) => state.wallet.wallet;
 
 export default walletSlice.reducer;

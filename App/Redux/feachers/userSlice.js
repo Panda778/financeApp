@@ -56,7 +56,7 @@ const userSlice = createSlice({
       state.data.password = "";
       state.data.secondName = "";
       state.data.token = "";
-      localStorage.removeItem("user");
+      localStorage.clear();
     },
     reverseUser(state, action) {
       state.status = "success";

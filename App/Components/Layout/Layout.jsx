@@ -453,7 +453,7 @@ const Layout = ({ children }) => {
                 onClose={handleCloseTransaction}
                 aria-labelledby={"add-card-transaction"}
               >
-                <DialogTitle id={"add-card-transaction"}>
+                <DialogTitle sx={{backgroundColor:'red'}} id={"add-card-transaction"}>
                   Add Card Transaction
                 </DialogTitle>
 

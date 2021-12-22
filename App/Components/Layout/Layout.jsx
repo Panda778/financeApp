@@ -22,13 +22,19 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@mui/styles";
 import { addTransaction } from "../../Redux/feachers/transactionSlice";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import {
   addCard,
   createCard,
   fetchAllWallets,
 } from "../../Redux/feachers/walletSlice";
-import { getUser, logOut, reverseUser, UserDatas } from "../../Redux/feachers/userSlice";
+import {
+  getUser,
+  logOut,
+  reverseUser,
+  UserDatas,
+  UserStatus,
+} from "../../Redux/feachers/userSlice";
 
 import {
   List,
@@ -171,7 +177,6 @@ const Layout = ({ children }) => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-
   //card
   const [transaction, setTransaction] = React.useState(false);
   const [money, setMoney] = React.useState("0");
@@ -182,9 +187,7 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
   const card = useSelector((state) => state.wallet.wallet);
   const userStatus = useSelector((state) => state.user.status);
-  const userData = useSelector(UserDatas);
-
-  
+  const userData = useSelector((state) => state.user.data);
 
   const addCards = () => {
     const newCard = { name: nameCard, currency, user: userData.id };
@@ -196,37 +199,27 @@ const Layout = ({ children }) => {
     localStorage.setItem("wallet", JSON.stringify(card));
     setOpens(false);
   };
-  console.log(userData.name);
 
   const handleChangeColor = () => {
     setColor(!color);
   };
-  
 
   const logOuts = () => {
     dispatch(logOut());
   };
   React.useEffect(() => {
-
-    if (localStorage.getItem('user')|| localStorage.getItem('userlogin')) {
-      let loc = JSON.parse(localStorage.getItem('user'))
-      console.log(loc);
-      dispatch(reverseUser(loc))
+    if (!localStorage.getItem('user')) {
+      return route.push("/");
     } else {
-      return false
+      let loc = JSON.parse(localStorage.getItem("user"));
+      dispatch(reverseUser(loc));
+    }
+    if (userData.id) {
+      dispatch(fetchAllWallets({ userId: userData.id }));
     }
 
-    dispatch(fetchAllWallets({ userId: userData.id }))
-      
-    if (userStatus === "idel") {
-      route.push("/");
-      
-    } else {
-      return false
-    }
+
     
-    
-   
   }, [userStatus]);
 
   console.log(card);
@@ -339,23 +332,21 @@ const Layout = ({ children }) => {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-      
     >
-      <MenuItem sx={{marginBottom:1}}>
+      <MenuItem sx={{ marginBottom: 1 }}>
         <AccountCircleOutlinedIcon />
-        <Typography sx={{marginLeft:1}}>
-        {userData.name}
-        </Typography>
+        <Typography sx={{ marginLeft: 1 }}>{userData.name}</Typography>
       </MenuItem>
-      <MenuItem sx={{borderTop:1}} onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem sx={{ borderTop: 1 }} onClick={handleMenuClose}>
+        Profile
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={logOuts}>
-        
         <Button>
-        <LogoutTwoTone sx={{color:'red'}}/>
-        
-        Log out
-       </Button></MenuItem>
+          <LogoutTwoTone sx={{ color: "red" }} />
+          Log out
+        </Button>
+      </MenuItem>
     </Menu>
   );
 
@@ -419,8 +410,6 @@ const Layout = ({ children }) => {
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.72)",
           backdropFilter: "blur(6px)",
-       
-         
         }}
         open={open}
       >
@@ -452,13 +441,6 @@ const Layout = ({ children }) => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={logOuts}
-            >
-            </IconButton>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
@@ -660,7 +642,6 @@ const Layout = ({ children }) => {
             width: drawerWidth,
             boxSizing: "border-box",
           },
-        
         }}
         variant="persistent"
         anchor="left"
@@ -673,12 +654,16 @@ const Layout = ({ children }) => {
             alt=""
           />
 
-          <IconButton sx={{
-            display: {
-              xs: 'block',
-              lg: 'none',
-              xl:'none'
-          }}} onClick={handleDrawerClose}>
+          <IconButton
+            sx={{
+              display: {
+                xs: "block",
+                lg: "none",
+                xl: "none",
+              },
+            }}
+            onClick={handleDrawerClose}
+          >
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (

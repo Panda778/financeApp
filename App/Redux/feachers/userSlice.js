@@ -51,14 +51,14 @@ const userSlice = createSlice({
   },
   reducers: {
     logOut(state,action) {
-      state.status='idel'
+      state.status = 'idel'
+      state.data.id =''
       state.data.name=''
       state.data.email=''
         state.data.password=''
         state.data.secondName=''
       state.data.token = ''
       localStorage.removeItem('user')
-      localStorage.removeItem('userlogin')
   
       
     },
@@ -98,13 +98,12 @@ const userSlice = createSlice({
         state.data.secondName=action.payload.secondName;
         state.data.id=action.payload.id
         state.data.name=action.payload.name;
-        state.data.token=action.payload.token
+        state.data.token = action.payload.token
+        localStorage.setItem("user", JSON.stringify(action.payload))
 
-        localStorage.setItem("userlogin", JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected,(state, action) => {
         state.status="fail";
-        localStorage.removeItem("userlogin");
       });
   },
 });

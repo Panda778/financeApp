@@ -56,8 +56,6 @@ const LendingLayout = ({ children }) => {
             ></Box>
 
             <Box sx={{ flexGrow: 0 }}>
-         
-
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"

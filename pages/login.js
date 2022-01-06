@@ -34,14 +34,17 @@ export default function Login() {
     }
   }, [status]);
   return (
-    <LendingLayout>
+    <>
       <HeadTags title="login" />
 
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Paper
           sx={{
             width: "50%",
-            height: "685px",
+            height: {
+              lg: "700px",
+              xl: "900px",
+            },
             borderRadius: 5,
             margin: "25px 0 0 16px",
             display: "flex",
@@ -61,7 +64,7 @@ export default function Login() {
             >
               <img
                 src="https://minimal-kit-react.vercel.app/static/logo.svg"
-                style={{ width: "50px", marginBottom: 10 }}
+                style={{ width: "50px" }}
                 alt=""
               />
               <Typography sx={{ marginTop: 1.5 }}>
@@ -77,8 +80,25 @@ export default function Login() {
                 </Link>
               </Typography>
             </Box>
-            <Box sx={{ maxWidth: "464px"}}>
-              <Typography variant={"h4"} sx={{lineHeight:'1.5', paddingLeft:'40px', paddingRight:'40px', margin:'80px 0 40px', fontWeight:'bold'}} component={"h4"}>
+            <Box
+              sx={{
+                maxWidth: "464px",
+                marginTop: { xl: 20, lg: 10 },
+                marginBottom: { xl: 15, lg: 10 },
+                marginLeft: { xl: 4, lg: 0 },
+              }}
+            >
+              <Typography
+                variant={"h4"}
+                sx={{
+                  lineHeight: "1.5",
+                  paddingLeft: "40px",
+                  paddingRight: "40px",
+                  margin: "80px 0 40px",
+                  fontWeight: "bold",
+                }}
+                component={"h4"}
+              >
                 Hi, Welcome back
               </Typography>
               <img
@@ -96,6 +116,6 @@ export default function Login() {
           setPassword={setPassword}
         />
       </Box>
-    </LendingLayout>
+    </>
   );
 }

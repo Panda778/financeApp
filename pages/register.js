@@ -45,12 +45,15 @@ const Register = () => {
   }, [status]);
 
   return (
-    <LendingLayout>
-      <Box sx={{display:'flex'}}>
+    <>
+      <Box sx={{ display: "flex" }}>
         <Paper
           sx={{
             width: "50%",
-            height: "685px",
+            height: {
+              xl: "900px",
+              lg: "700px",
+            },
             borderRadius: 5,
             margin: "25px 0 0 16px",
             display: "flex",
@@ -70,15 +73,15 @@ const Register = () => {
             >
               <img
                 src="https://minimal-kit-react.vercel.app/static/logo.svg"
-                style={{ width: "50px"}}
+                style={{ width: "50px" }}
                 alt=""
               />
               <Typography sx={{ marginTop: 1.5 }}>
-              Already have an account? 
+                Already have an account?
                 <Link href={"/login"} passHref>
                   <Typography
                     color={"green"}
-                    sx={{ cursor: "pointer", paddingLeft:1 }}
+                    sx={{ cursor: "pointer", paddingLeft: 1 }}
                     component={"span"}
                   >
                     Login
@@ -86,9 +89,25 @@ const Register = () => {
                 </Link>
               </Typography>
             </Box>
-            <Box sx={{ maxWidth: "464px" }}>
-              <Typography fontWeight={'700'} sx={{lineHeight:'1.5', paddingLeft:'40px', paddingRight:'40px', margin:'80px 0 40px'}} variant={"h4"} component={"h4"}>
-              Manage the job more effectively with Minimal
+            <Box
+              sx={{
+                maxWidth: "464px",
+                marginTop: { xl: 15, lg: 10 },
+                marginBottom: { xl: 15, lg: 10 },
+              }}
+            >
+              <Typography
+                fontWeight={"700"}
+                sx={{
+                  lineHeight: "1.5",
+                  paddingLeft: "40px",
+                  paddingRight: "40px",
+                  margin: "80px 0 40px",
+                }}
+                variant={"h4"}
+                component={"h4"}
+              >
+                Manage the job more effectively with Minimal
               </Typography>
               <img
                 src="https://minimal-kit-react.vercel.app/static/illustrations/illustration_register.png"
@@ -109,7 +128,7 @@ const Register = () => {
           setSecondName={setSecondName}
         />
       </Box>
-    </LendingLayout>
+    </>
   );
 };
 

@@ -27,7 +27,7 @@ const RegisterForm = ({
   secondName,
   setSecondName,
 }) => {
-const status =useSelector(UserStatus)
+  const status = useSelector(UserStatus);
 
   return (
     <Container>
@@ -35,7 +35,7 @@ const status =useSelector(UserStatus)
         sx={{
           backgroundColor: "primary",
           maxWidth: "70%",
-          margin: "6% auto",
+          margin: "15% auto",
           padding: 5,
           borderRadius: 5,
         }}
@@ -219,10 +219,7 @@ const status =useSelector(UserStatus)
               variant="contained"
               fullWidth
             >
-               {status === 'loading' ? <Progress /> :
-            
-            'send'
-          }
+              {status === "loading" ? <Progress /> : "send"}
             </Button>
           </form>
         </Box>

@@ -7,8 +7,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import { v4 as uuidv4 } from "uuid";
 import Toolbar from "@mui/material/Toolbar";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import { alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
+import ModalCard from "../ModalCard/ModalCard";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
 import AddCardOutlinedIcon from "@mui/icons-material/AddCardOutlined";
 import Divider from "@mui/material/Divider";
@@ -21,20 +20,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MailIcon from "@mui/icons-material/Mail";
 import { makeStyles } from "@mui/styles";
-import { addTransaction } from "../../Redux/feachers/transactionSlice";
+import ModalTransaction from "../ModalTransaction/ModalTransaction";
+import { addTransaction, PostTransactions } from "../../Redux/feachers/transactionSlice";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import {
-  addCard,
   createCard,
   fetchAllWallets,
+  walletData,
 } from "../../Redux/feachers/walletSlice";
-import {
-  getUser,
-  logOut,
-  reverseUser,
-  UserDatas,
-  UserStatus,
-} from "../../Redux/feachers/userSlice";
+import { logOut, reverseUser } from "../../Redux/feachers/userSlice";
 
 import {
   List,
@@ -43,13 +37,6 @@ import {
   Menu,
   MenuItem,
   ListItemText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  TextField,
-  Container,
-  DialogActions,
 } from "@mui/material";
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -98,32 +85,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
 //AppBAr
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -164,6 +125,43 @@ const useStyle = makeStyles({
 });
 
 const Layout = ({ children }) => {
+  const currencies1 = [
+    {
+      value: "visa",
+      label: "$",
+    },
+    {
+      value: "paypal",
+      label: "€",
+    },
+    {
+      value: "uzcard",
+      label: "฿",
+    },
+    {
+      value: "hump",
+      label: "¥",
+    },
+  ];
+  const currencies = [
+    {
+      value: "USD",
+      label: "$",
+    },
+    {
+      value: "EUR",
+      label: "€",
+    },
+    {
+      value: "BTC",
+      label: "฿",
+    },
+    {
+      value: "JPY",
+      label: "¥",
+    },
+  ];
+
   const style = useStyle();
   const theme = useTheme();
 
@@ -179,13 +177,21 @@ const Layout = ({ children }) => {
 
   //card
   const [transaction, setTransaction] = React.useState(false);
-  const [money, setMoney] = React.useState("0");
-  const [nameCard, setNameCard] = React.useState("");
+  const [note, setNote] = React.useState("");
+  const [ammount, setAmmount] = React.useState("0");
+  const [wallet, setWallet] = React.useState('');
+  console.log(wallet);
+
+
+  const [type, setType] = React.useState('')
+  const [category,setCategory]= React.useState('')
   const [currency, setCurrency] = React.useState("");
+  const [nameCard, setNameCard] = React.useState("");
   const [typeCard, setTypeCard] = React.useState("");
   const route = useRouter();
   const dispatch = useDispatch();
-  const card = useSelector((state) => state.wallet.wallet);
+  const card = useSelector(walletData);
+  console.log(card);
   const userStatus = useSelector((state) => state.user.status);
   const userData = useSelector((state) => state.user.data);
 
@@ -193,7 +199,7 @@ const Layout = ({ children }) => {
     const newCard = { name: nameCard, currency, user: userData.id };
     dispatch(createCard(newCard));
     setNameCard("");
-    setMoney("");
+    setAmmount("");
     setTypeCard("");
     setCurrency("");
     localStorage.setItem("wallet", JSON.stringify(card));
@@ -219,12 +225,21 @@ const Layout = ({ children }) => {
     }
   }, [userStatus]);
 
-  console.log(card);
+  console.log(card.id);
 
-  const addTranc = () => {
-    const newTransaction = { id: uuidv4(), nameCard, currency };
-    console.log(newTransaction);
+  const addTranc = (event) => {
+   console.log(event.target.id);
+   
+    const newTransaction = {
+      wallet,
+      ammount: parseInt(ammount),
+      note,
+      type,
+      category
+    };
+    
     dispatch(addTransaction({ newTransaction }));
+    dispatch(PostTransactions(newTransaction))
   };
 
   const handleOpenCardTransaction = () => {
@@ -238,42 +253,6 @@ const Layout = ({ children }) => {
   const handleChangeCur = (event) => {
     setCurrency(event.target.value);
   };
-  const currencies = [
-    {
-      value: "USD",
-      label: "$",
-    },
-    {
-      value: "EUR",
-      label: "€",
-    },
-    {
-      value: "BTC",
-      label: "฿",
-    },
-    {
-      value: "JPY",
-      label: "¥",
-    },
-  ];
-  const currencies1 = [
-    {
-      value: "visa",
-      label: "$",
-    },
-    {
-      value: "paypal",
-      label: "€",
-    },
-    {
-      value: "uzcard",
-      label: "฿",
-    },
-    {
-      value: "hump",
-      label: "¥",
-    },
-  ];
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -406,7 +385,7 @@ const Layout = ({ children }) => {
         position="fixed"
         sx={{
           backgroundColor: "rgba(255, 255, 255, 0.72)",
-          backdropFilter: "blur(6px)",
+          backdropFilter: "blur(10px)",
         }}
         open={open}
       >
@@ -427,15 +406,6 @@ const Layout = ({ children }) => {
               }}
             />
           </IconButton>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -447,79 +417,25 @@ const Layout = ({ children }) => {
               <LocalAtmOutlinedIcon />
             </IconButton>
 
-            <Box>
-              <Dialog
-                open={transaction}
-                onClose={handleCloseTransaction}
-                aria-labelledby={"add-card-transaction"}
-              >
-                <DialogTitle sx={{backgroundColor:'red'}} id={"add-card-transaction"}>
-                  Add Card Transaction
-                </DialogTitle>
-
-                <DialogContent>
-                  <DialogContentText>Add transaction</DialogContentText>
-                  <Container>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <TextField
-                        fullWidth
-                        id="outlined-basic"
-                        label="name your card"
-                        variant="outlined"
-                        value={nameCard}
-                        onChange={(e) => setNameCard(e.target.value)}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "baseline",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <TextField
-                        id="outlined-select-currency"
-                        select
-                        label="Select"
-                        value={currency}
-                        onChange={handleChangeCur}
-                        helperText="Please select your currency"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      <TextField
-                        sx={{ width: "48%", marginLeft: 2 }}
-                        id="outlined-basic"
-                        label="money"
-                        variant="outlined"
-                        value={money}
-                        onChange={(e) => setMoney(e.target.value)}
-                      />
-                    </Box>
-
-                    <DialogActions>
-                      <Button
-                        onClick={addTranc}
-                        color={"info"}
-                        variant={"contained"}
-                      >
-                        addTransaction
-                      </Button>
-                    </DialogActions>
-                  </Container>
-                </DialogContent>
-              </Dialog>
-            </Box>
+            <ModalTransaction
+              transaction={transaction}
+              setTransaction={setTransaction}
+              wallet={wallet}
+              setWallet={setWallet}
+              addTranc={addTranc}
+              handleCloseTransaction={handleCloseTransaction}
+              currency={currency}
+              currencies={currencies}
+              handleChangeCur={handleChangeCur}
+              money={ammount}
+              setMoney={setAmmount}
+              note={note}
+              setNote={setNote}
+              type={type}
+              setType={setType}
+              category={category}
+              setCategory={setCategory}
+            />
             <IconButton
               onClick={handleOpenCard}
               size="large"
@@ -528,95 +444,23 @@ const Layout = ({ children }) => {
             >
               <AddCardOutlinedIcon />
             </IconButton>
-            <Box>
-              <Dialog
-                open={opens}
-                onClose={handleClose}
-                aria-labelledby={"add-card"}
-              >
-                <DialogTitle id={"add-card"} sx={{ textAlign: "center" }}>
-                  Add Card
-                </DialogTitle>
-
-                <DialogContent>
-                  <Container>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: 2,
-                        marginTop: 2,
-                      }}
-                    >
-                      <TextField
-                        id="outlined-select-currency"
-                        select
-                        label="Select"
-                        value={typeCard}
-                        sx={{ width: "30%" }}
-                        onChange={(e) => setTypeCard(e.target.value)}
-                      >
-                        {currencies1.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.value}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-
-                      <TextField
-                        sx={{ width: "69%" }}
-                        id="outlined-basic"
-                        label="name your card"
-                        variant="outlined"
-                        value={nameCard}
-                        onChange={(e) => setNameCard(e.target.value)}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "baseline",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <TextField
-                        id="outlined-select-currency"
-                        select
-                        label="Select"
-                        value={currency}
-                        onChange={handleChangeCur}
-                        helperText="Please select your currency"
-                      >
-                        {currencies.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                      <TextField
-                        sx={{ width: "48%", marginLeft: 2 }}
-                        id="outlined-basic"
-                        label="money"
-                        variant="outlined"
-                        value={money}
-                        onChange={(e) => setMoney(e.target.value)}
-                      />
-                    </Box>
-
-                    <DialogActions>
-                      <Button
-                        onClick={addCards}
-                        color={"info"}
-                        variant={"contained"}
-                      >
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Container>
-                </DialogContent>
-              </Dialog>
-            </Box>
+            <ModalCard
+              open={opens}
+              handleClose={handleClose}
+              setWallet={setWallet}
+              setNameCard={setNameCard}
+              nameCard={nameCard}
+              wallet={wallet}
+              typeCard={typeCard}
+              setTypeCard={setTypeCard}
+              currencies={currencies}
+              currencies1={currencies1}
+              currency={currency}
+              handleChangeCur={handleChangeCur}
+              money={ammount}
+              setMoney={setAmmount}
+              addCards={addCards}
+            />
             <IconButton
               size="large"
               edge="end"
